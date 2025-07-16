@@ -1,0 +1,11 @@
+﻿.idea
+*.user
+
+.artifacts
+.publish
+.run
+
+.git
+.gitignore
+.dockerignore
+DockerCompose.yml

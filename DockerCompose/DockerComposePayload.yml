@@ -1,0 +1,26 @@
+﻿name: match_making_payload
+
+services:
+  match_making_service:
+    image: match_making_service:latest
+    container_name: match_making_service
+    networks:
+      - match_making
+    ports:
+      - "800:800"
+      - "4430:4430"
+  match_making_worker_1:
+    image: match_making_worker:latest
+    container_name: match_making_worker_1
+    networks:
+      - match_making
+  match_making_worker_2:
+    image: match_making_worker:latest
+    container_name: match_making_worker_2
+    networks:
+      - match_making
+
+networks:
+  match_making:
+    name: match_making
+    external: true

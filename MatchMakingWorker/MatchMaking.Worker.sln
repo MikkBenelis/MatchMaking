@@ -1,0 +1,73 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MiscellaneousFiles", "MiscellaneousFiles", "{48BB1546-C5BF-44A2-8764-645FAE506D0B}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildSettings", "BuildSettings", "{34F2514E-3CB9-4AC7-A17C-0D0C19CD8927}"
+	ProjectSection(SolutionItems) = preProject
+		..\Directory.Build.props = ..\Directory.Build.props
+		..\Directory.Build.targets = ..\Directory.Build.targets
+		..\global.json = ..\global.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMDUtilities", "CMDUtilities", "{698EB4B8-4FE0-49DA-9A79-BC4253DFD443}"
+	ProjectSection(SolutionItems) = preProject
+		..\CMDUtilities\DockerArtifactsCleanup.bat = ..\CMDUtilities\DockerArtifactsCleanup.bat
+		..\CMDUtilities\DockerComposeInfrastructureDown.bat = ..\CMDUtilities\DockerComposeInfrastructureDown.bat
+		..\CMDUtilities\DockerComposeInfrastructureUp.bat = ..\CMDUtilities\DockerComposeInfrastructureUp.bat
+		..\CMDUtilities\DockerComposePayloadDown.bat = ..\CMDUtilities\DockerComposePayloadDown.bat
+		..\CMDUtilities\DockerComposePayloadUp.bat = ..\CMDUtilities\DockerComposePayloadUp.bat
+		..\CMDUtilities\DockerImageBuildService.bat = ..\CMDUtilities\DockerImageBuildService.bat
+		..\CMDUtilities\DockerImageBuildWorker.bat = ..\CMDUtilities\DockerImageBuildWorker.bat
+		..\CMDUtilities\KafkaInitialSetup.bat = ..\CMDUtilities\KafkaInitialSetup.bat
+		..\CMDUtilities\SingleFileCleanup.bat = ..\CMDUtilities\SingleFileCleanup.bat
+		..\CMDUtilities\SingleFileStartup.bat = ..\CMDUtilities\SingleFileStartup.bat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerSettings", "DockerSettings", "{9EEDFBE9-54A4-4041-97CF-B245564ED4B2}"
+	ProjectSection(SolutionItems) = preProject
+		..\.dockerignore = ..\.dockerignore
+		..\DockerCompose\DockerComposeInfrastructure.yml = ..\DockerCompose\DockerComposeInfrastructure.yml
+		..\DockerCompose\DockerComposePayload.yml = ..\DockerCompose\DockerComposePayload.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "README", "README", "{D032F92F-C26D-487E-B918-142917BB3DEC}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+		..\README.pdf = ..\README.pdf
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMakingWorker.Data", "MatchMakingWorker.Data\MatchMakingWorker.Data.csproj", "{8868DE5A-2EB7-43BB-B256-C71972C15B58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMakingWorker.Services", "MatchMakingWorker.Services\MatchMakingWorker.Services.csproj", "{5B034774-5303-4E50-A4D7-44A0B1F24EBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMakingWorkerAPP", "MatchMakingWorkerAPP\MatchMakingWorkerAPP.csproj", "{C2B9E108-7856-4635-87B3-086F97879177}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8868DE5A-2EB7-43BB-B256-C71972C15B58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8868DE5A-2EB7-43BB-B256-C71972C15B58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8868DE5A-2EB7-43BB-B256-C71972C15B58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8868DE5A-2EB7-43BB-B256-C71972C15B58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B034774-5303-4E50-A4D7-44A0B1F24EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B034774-5303-4E50-A4D7-44A0B1F24EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B034774-5303-4E50-A4D7-44A0B1F24EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B034774-5303-4E50-A4D7-44A0B1F24EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2B9E108-7856-4635-87B3-086F97879177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B9E108-7856-4635-87B3-086F97879177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B9E108-7856-4635-87B3-086F97879177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B9E108-7856-4635-87B3-086F97879177}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{34F2514E-3CB9-4AC7-A17C-0D0C19CD8927} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
+		{698EB4B8-4FE0-49DA-9A79-BC4253DFD443} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
+		{9EEDFBE9-54A4-4041-97CF-B245564ED4B2} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
+		{D032F92F-C26D-487E-B918-142917BB3DEC} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
+	EndGlobalSection
+EndGlobal

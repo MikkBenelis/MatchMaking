@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<AssemblyName>MatchMakingWorkerAPP</AssemblyName>
+		<RootNamespace>MatchMakingWorkerAPP</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\MatchMakingWorker.Services\MatchMakingWorker.Services.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="*.DotSettings"/>
+	</ItemGroup>
+
+</Project>
