@@ -1,0 +1,53 @@
+{
+	"Logging": {
+		"Console": {
+			"LogLevel": {
+				"Microsoft.AspNetCore": "Warning",
+				"Microsoft.Hosting.Lifetime": "Warning",
+				"MatchMakingService.Services.MatchUserProducerService": "Information",
+				"MatchMakingService.Services.MatchResultConsumerService": "Information"
+			},
+			"FormatterName": "simple",
+			"FormatterOptions": {
+				"SingleLine": true,
+				"IncludeScopes": true,
+				"TimestampFormat": "yyyy.MM.dd HH:mm:ss "
+			}
+		}
+	},
+	"ConnectionStrings": {
+		"Redis": "host.docker.internal:6379",
+		"Kafka": "host.docker.internal:9092"
+	},
+	"Kestrel": {
+		"Endpoints": {
+			"Http": {
+				"Url": "http://0.0.0.0:800"
+			},
+			"Https": {
+				"Url": "https://0.0.0.0:4430",
+				"Certificate": {
+					"Path": "MatchMakingServiceAPI.pfx",
+					"Password": "default"
+				}
+			}
+		}
+	},
+	"AllowedHosts": "*",
+	"AllowSwagger": true,
+	"ForceHTTPSRedirect": false,
+	"MatchMaking": {
+		"KafkaTopics": {
+			"Request": "matchmaking.request",
+			"Complete": "matchmaking.complete"
+		},
+		"RateLimiter": {
+			"MillisecondsLimit": 100,
+			"RequestsCountLimit": 1,
+			"RequestsQueueLimit": 0,
+			"IsActiveGlobally": true,
+			"IsActiveForMatchSearch": true,
+			"IsActiveForMatchStatus": false
+		}
+	}
+}
