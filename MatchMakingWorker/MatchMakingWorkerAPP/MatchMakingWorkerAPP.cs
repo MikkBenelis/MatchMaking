@@ -17,5 +17,38 @@ Console.ResetColor();
 
 #endregion
 
-Console.WriteLine("It works!");
-await Task.Delay(-1);
+#region Builder
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Configuration.AddJsonFile("MatchMakingWorkerAPP.json");
+builder.Logging.AddMatchMakingLoggerProvider();
+
+#region Redis
+
+var redisConnectionString = builder.Configuration.GetConnectionString(
+    Constants.Configuration.ConnectionStrings.Redis)!;
+
+var redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
+builder.Services.AddSingleton<IConnectionMultiplexer>(redisConnectionMultiplexer);
+
+#endregion
+
+#region Services
+
+builder.Services.AddSingleton<MatchUserConsumerService>();
+builder.Services.AddHostedService<MatchUserConsumerService>(provider =>
+    provider.GetRequiredService<MatchUserConsumerService>());
+
+builder.Services.AddHostedService<MatchResultProducerService>();
+
+#endregion
+
+#endregion
+
+#region Application
+
+var application = builder.Build();
+await application.RunAsync();
+
+#endregion
