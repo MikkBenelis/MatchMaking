@@ -1,0 +1,30 @@
+{
+	"Logging": {
+		"Console": {
+			"LogLevel": {
+				"Microsoft.Hosting.Lifetime": "Warning",
+				"MatchMakingService.MatchUserProducer": "Information",
+				"MatchMakingService.MatchResultConsumer": "Information"
+			},
+			"FormatterName": "simple",
+			"FormatterOptions": {
+				"SingleLine": true,
+				"IncludeScopes": true,
+				"TimestampFormat": "yyyy.MM.dd HH:mm:ss "
+			}
+		}
+	},
+	"ConnectionStrings": {
+		"Kafka": "host.docker.internal:9092"
+	},
+	"MatchMaking": {
+		"KafkaTopics": {
+			"Request": "matchmaking.request",
+			"Complete": "matchmaking.complete"
+		},
+		"RequestDelay": {
+			"MinMS": 3000,
+			"MaxMS": 5000
+		}
+	}
+}

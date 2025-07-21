@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish MatchMakingWorker (LINUX)" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" include_all_content_for_self_extract="true" include_native_libs_for_self_extract="true" platform="Any CPU" produce_single_file="true" runtime="win-x64" target_folder="$PROJECT_DIR$/.publish/LINUX/WORKER" target_framework="net9.0" uuid_high="7725394356265174746" uuid_low="-7600978732782982571" />
+    <method v="2" />
+  </configuration>
+</component>

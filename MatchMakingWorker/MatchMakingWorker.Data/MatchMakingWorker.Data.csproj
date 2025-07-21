@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<AssemblyName>MatchMakingWorker.Data</AssemblyName>
+		<RootNamespace>MatchMakingWorker.Data</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="JetBrains.Annotations" Version="2024.3.0"/>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="*.DotSettings"/>
+	</ItemGroup>
+
+</Project>

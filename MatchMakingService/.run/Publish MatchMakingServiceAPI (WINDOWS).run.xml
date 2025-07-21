@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Publish MatchMakingServiceAPI (WINDOWS)" type="DotNetFolderPublish" factoryName="Publish to folder">
+    <riderPublish configuration="Release" delete_existing_files="true" include_all_content_for_self_extract="true" include_native_libs_for_self_extract="true" platform="Any CPU" produce_single_file="true" runtime="win-x64" target_folder="$PROJECT_DIR$/.publish/WINDOWS" target_framework="net9.0" uuid_high="-4415250533165152715" uuid_low="-8668575582381436553" />
+    <method v="2" />
+  </configuration>
+</component>
