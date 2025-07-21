@@ -1,0 +1,45 @@
+name: match_making_auto
+
+services:
+  match_making_auto_kafka:
+    image: apache/kafka:latest
+    container_name: match_making_auto_kafka
+    hostname: match_making_auto_kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: "controller,broker"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://host.docker.internal:9092"
+      KAFKA_LISTENERS: "CONTROLLER://:9093,PLAINTEXT://:9092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@match_making_auto_kafka:9093"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_TOPIC_NUM_PARTITIONS: 2
+    networks:
+      - match_making_auto
+    ports:
+      - "9092:9092"
+    volumes:
+      - match_making_auto:/etc/kafka/secrets
+      - match_making_auto:/mnt/shared/config
+      - match_making_auto:/var/lib/kafka/data
+  match_making_auto_kafka_ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: match_making_auto_kafka_ui
+    networks:
+      - match_making_auto
+    ports:
+      - "8080:8080"
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+    volumes:
+      - match_making_auto:/etc/kui
+
+networks:
+  match_making_auto:
+    name: match_making_auto
+
+volumes:
+  match_making_auto:
+    name: match_making_auto
