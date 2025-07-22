@@ -4,13 +4,25 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS publish
 ARG BUILD_CONFIGURATION=Release
 
 WORKDIR /src
-COPY . .
+COPY [ ".editorconfig", \
+	"Directory.Build.props", \
+	"Directory.Build.targets", \
+	"global.json", \
+	"./" ]
 
-WORKDIR "/src/MatchMakingWorker/MatchMakingWorkerAPP"
-RUN dotnet restore "./MatchMakingWorkerAPP.csproj"
+COPY "MatchMakingWorker/MatchMaking.Worker.sln" "./"
+COPY "MatchMakingWorker/MatchMakingWorker.Data/MatchMakingWorker.Data.csproj" "./MatchMakingWorker.Data/"
+COPY "MatchMakingWorker/MatchMakingWorker.Services/MatchMakingWorker.Services.csproj" "./MatchMakingWorker.Services/"
+COPY "MatchMakingWorker/MatchMakingWorkerAPP/MatchMakingWorkerAPP.csproj" "./MatchMakingWorkerAPP/"
+
+RUN dotnet restore
+
+COPY "MatchMakingWorker" "./"
+WORKDIR "/src/MatchMakingWorkerAPP"
+
 RUN dotnet publish "./MatchMakingWorkerAPP.csproj" \
-    -c $BUILD_CONFIGURATION -o /app/publish \
-    /p:UseAppHost=false
+    -c $BUILD_CONFIGURATION -o /app \
+    -r linux-x64 /p:UseAppHost=false
 
 # STAGE 2: Setup app runtime
 
@@ -19,5 +31,5 @@ ARG APP_UID=1000
 USER $APP_UID
 WORKDIR /app
 
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT [ "dotnet", "MatchMakingWorkerAPP.dll" ]
