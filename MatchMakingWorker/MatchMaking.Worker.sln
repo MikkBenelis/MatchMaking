@@ -13,17 +13,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildSettings", "BuildSetti
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CMDUtilities", "CMDUtilities", "{698EB4B8-4FE0-49DA-9A79-BC4253DFD443}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Linux", "Linux", "{937700EC-C035-4EC6-AD75-7F6EDE7E293A}"
 	ProjectSection(SolutionItems) = preProject
-		..\CMDUtilities\DockerArtifactsCleanup.bat = ..\CMDUtilities\DockerArtifactsCleanup.bat
-		..\CMDUtilities\DockerComposeInfrastructureDown.bat = ..\CMDUtilities\DockerComposeInfrastructureDown.bat
-		..\CMDUtilities\DockerComposeInfrastructureUp.bat = ..\CMDUtilities\DockerComposeInfrastructureUp.bat
-		..\CMDUtilities\DockerComposePayloadDown.bat = ..\CMDUtilities\DockerComposePayloadDown.bat
-		..\CMDUtilities\DockerComposePayloadUp.bat = ..\CMDUtilities\DockerComposePayloadUp.bat
-		..\CMDUtilities\DockerImageBuildService.bat = ..\CMDUtilities\DockerImageBuildService.bat
-		..\CMDUtilities\DockerImageBuildWorker.bat = ..\CMDUtilities\DockerImageBuildWorker.bat
-		..\CMDUtilities\KafkaInitialSetup.bat = ..\CMDUtilities\KafkaInitialSetup.bat
-		..\CMDUtilities\SingleFileCleanup.bat = ..\CMDUtilities\SingleFileCleanup.bat
-		..\CMDUtilities\SingleFileStartup.bat = ..\CMDUtilities\SingleFileStartup.bat
+		..\CMDUtilities\Linux\DockerArtifactsCleanup.sh = ..\CMDUtilities\Linux\DockerArtifactsCleanup.sh
+		..\CMDUtilities\Linux\DockerComposeInfrastructureDown.sh = ..\CMDUtilities\Linux\DockerComposeInfrastructureDown.sh
+		..\CMDUtilities\Linux\DockerComposeInfrastructureUp.sh = ..\CMDUtilities\Linux\DockerComposeInfrastructureUp.sh
+		..\CMDUtilities\Linux\DockerComposePayloadDown.sh = ..\CMDUtilities\Linux\DockerComposePayloadDown.sh
+		..\CMDUtilities\Linux\DockerComposePayloadUp.sh = ..\CMDUtilities\Linux\DockerComposePayloadUp.sh
+		..\CMDUtilities\Linux\DockerImageBuildService.sh = ..\CMDUtilities\Linux\DockerImageBuildService.sh
+		..\CMDUtilities\Linux\DockerImageBuildWorker.sh = ..\CMDUtilities\Linux\DockerImageBuildWorker.sh
+		..\CMDUtilities\Linux\KafkaInitialSetup.sh = ..\CMDUtilities\Linux\KafkaInitialSetup.sh
+		..\CMDUtilities\Linux\SingleFileStartup.sh = ..\CMDUtilities\Linux\SingleFileStartup.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows", "Windows", "{DC1AF654-EDF8-49F0-BF8C-7132A4CD12B4}"
+	ProjectSection(SolutionItems) = preProject
+		..\CMDUtilities\Windows\DockerArtifactsCleanup.bat = ..\CMDUtilities\Windows\DockerArtifactsCleanup.bat
+		..\CMDUtilities\Windows\DockerComposeInfrastructureDown.bat = ..\CMDUtilities\Windows\DockerComposeInfrastructureDown.bat
+		..\CMDUtilities\Windows\DockerComposeInfrastructureUp.bat = ..\CMDUtilities\Windows\DockerComposeInfrastructureUp.bat
+		..\CMDUtilities\Windows\DockerComposePayloadDown.bat = ..\CMDUtilities\Windows\DockerComposePayloadDown.bat
+		..\CMDUtilities\Windows\DockerComposePayloadUp.bat = ..\CMDUtilities\Windows\DockerComposePayloadUp.bat
+		..\CMDUtilities\Windows\DockerImageBuildService.bat = ..\CMDUtilities\Windows\DockerImageBuildService.bat
+		..\CMDUtilities\Windows\DockerImageBuildWorker.bat = ..\CMDUtilities\Windows\DockerImageBuildWorker.bat
+		..\CMDUtilities\Windows\KafkaInitialSetup.bat = ..\CMDUtilities\Windows\KafkaInitialSetup.bat
+		..\CMDUtilities\Windows\SingleFileStartup.bat = ..\CMDUtilities\Windows\SingleFileStartup.bat
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerSettings", "DockerSettings", "{9EEDFBE9-54A4-4041-97CF-B245564ED4B2}"
@@ -67,6 +81,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{34F2514E-3CB9-4AC7-A17C-0D0C19CD8927} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
 		{698EB4B8-4FE0-49DA-9A79-BC4253DFD443} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
+		{DC1AF654-EDF8-49F0-BF8C-7132A4CD12B4} = {698EB4B8-4FE0-49DA-9A79-BC4253DFD443}
+		{937700EC-C035-4EC6-AD75-7F6EDE7E293A} = {698EB4B8-4FE0-49DA-9A79-BC4253DFD443}
 		{9EEDFBE9-54A4-4041-97CF-B245564ED4B2} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
 		{D032F92F-C26D-487E-B918-142917BB3DEC} = {48BB1546-C5BF-44A2-8764-645FAE506D0B}
 	EndGlobalSection
