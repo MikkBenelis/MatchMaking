@@ -1,21 +1,42 @@
 namespace MatchMakingService;
 
-public class MatchUserProducer(ILogger<MatchUserProducer> logger, IConfiguration configuration) : MatchMakingServiceBase(logger)
+#pragma warning disable CS9107
+
+public class MatchUserProducer(ILogger<MatchUserProducer> logger, IConfiguration configuration)
+    : MatchMakingServiceBase(logger, configuration)
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(Constants.LogMessages.ServiceRunning);
 
+        #region Ensure match making request topic created
+
+        var matchMakingRequestTopicName = configuration.GetValue<string>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.NameKey)!;
+
+        var matchMakingRequestTopicNumPartitions = configuration.GetValue<int>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.NumPartitionsKey);
+
+        var matchMakingRequestTopicReplicationFactor = configuration.GetValue<short>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.ReplicationFactorKey);
+
+        await EnsureTopicCreatedAsync(
+            matchMakingRequestTopicName,
+            matchMakingRequestTopicNumPartitions,
+            matchMakingRequestTopicReplicationFactor);
+
+        #endregion
+
         var producerConfig = new ProducerConfig
         {
             BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
+                Constants.Configuration.ConnectionStrings.KafkaName),
         };
 
         using var producer = new ProducerBuilder<string, string>(producerConfig).Build();
 
-        var minRequestDelay = configuration.GetValue<int>(Constants.Configuration.MatchMaking.RequestDelay.MinMS);
-        var maxRequestDelay = configuration.GetValue<int>(Constants.Configuration.MatchMaking.RequestDelay.MaxMS);
+        var minRequestDelay = configuration.GetValue<int>(Constants.Configuration.MatchMaking.RequestDelay.MinMSKey);
+        var maxRequestDelay = configuration.GetValue<int>(Constants.Configuration.MatchMaking.RequestDelay.MaxMSKey);
 
         while (!cancellationToken.IsCancellationRequested)
         {
@@ -32,7 +53,7 @@ public class MatchUserProducer(ILogger<MatchUserProducer> logger, IConfiguration
         logger.LogDebug(Constants.LogMessages.ServiceWorking);
 
         var matchMakingRequestTopicName = configuration.GetValue<string>(
-            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest);
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.NameKey);
 
         var userID = Guid.NewGuid().ToString();
         var timestamp = DateTime.UtcNow;

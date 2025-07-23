@@ -1,20 +1,37 @@
 namespace MatchMakingService;
 
-public class MatchResultConsumer(ILogger<MatchResultConsumer> logger, IConfiguration configuration) : MatchMakingServiceBase(logger)
+#pragma warning disable CS9107
+
+public class MatchResultConsumer(ILogger<MatchResultConsumer> logger, IConfiguration configuration)
+    : MatchMakingServiceBase(logger, configuration)
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(Constants.LogMessages.ServiceRunning);
 
+        #region Ensure match making complete topic created
+
         var matchMakingCompleteTopicName = configuration.GetValue<string>(
-            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete)!;
-        await EnsureTopicCreatedAsync(matchMakingCompleteTopicName);
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.NameKey)!;
+
+        var matchMakingCompleteTopicNumPartitions = configuration.GetValue<int>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.NumPartitionsKey);
+
+        var matchMakingCompleteTopicReplicationFactor = configuration.GetValue<short>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.ReplicationFactorKey);
+
+        await EnsureTopicCreatedAsync(
+            matchMakingCompleteTopicName,
+            matchMakingCompleteTopicNumPartitions,
+            matchMakingCompleteTopicReplicationFactor);
+
+        #endregion
 
         var consumerConfig = new ConsumerConfig
         {
             GroupId = nameof(MatchMakingService),
             BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
+                Constants.Configuration.ConnectionStrings.KafkaName),
             AutoOffsetReset = AutoOffsetReset.Earliest,
         };
 
@@ -55,39 +72,5 @@ public class MatchResultConsumer(ILogger<MatchResultConsumer> logger, IConfigura
         }
 
         return Task.CompletedTask;
-    }
-
-    private async Task EnsureTopicCreatedAsync(string topicName)
-    {
-        var adminConfig = new AdminClientConfig
-        {
-            BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
-        };
-
-        using var adminClient = new AdminClientBuilder(adminConfig).Build();
-        try
-        {
-            var metadata = adminClient.GetMetadata(TimeSpan.FromSeconds(10));
-            if (metadata.Topics.Exists(t => t.Topic == topicName))
-                return;
-
-            await adminClient.CreateTopicsAsync([
-                new TopicSpecification
-                {
-                    Name = topicName,
-                    ReplicationFactor = 1,
-                    NumPartitions = 1,
-                },
-            ]);
-        }
-        catch (CreateTopicsException ex)
-        {
-            using (logger.BeginScope("-"))
-            {
-                logger.LogError(Constants.LogMessages.TopicCreationError);
-                logger.LogError(Constants.LogMessages.FailureReason, ex.Error.Reason);
-            }
-        }
     }
 }

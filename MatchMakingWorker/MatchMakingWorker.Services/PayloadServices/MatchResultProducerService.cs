@@ -1,42 +1,24 @@
-﻿namespace MatchMakingWorker.Services;
+﻿namespace MatchMakingWorker.Services.PayloadServices;
 
-[PublicAPI]
+#pragma warning disable CS9107
+
 public class MatchResultProducerService(
     ILogger<MatchResultProducerService> logger,
     IConfiguration configuration,
     MatchUserConsumerService consumer)
-    : MatchMakingServiceBase(logger)
+    : MatchMakingKafkaProducerBase(logger, configuration)
 {
-    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
+    protected override async Task DoWorkAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation(Constants.LogMessages.ServiceRunning);
-
-        var producerConfig = new ProducerConfig
-        {
-            BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
-        };
-
-        using var producer = new ProducerBuilder<string, string>(producerConfig).Build();
-
-        while (!cancellationToken.IsCancellationRequested)
-            await DoWorkAsync(producer, cancellationToken);
-    }
-
-    private async Task DoWorkAsync(IProducer<string, string> producer, CancellationToken cancellationToken)
-    {
-        logger.LogDebug(Constants.LogMessages.ServiceWorking);
-
-        var matchMakingCompleteTopicName = configuration.GetValue<string>(
-            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete);
+        await base.DoWorkAsync(cancellationToken);
 
         var groupSize = configuration.GetValue<int>(
-            Constants.Configuration.MatchMaking.GroupSize);
+            Constants.Configuration.MatchMaking.GroupSizeKey);
 
         while (consumer.ConsumedUsers.Count < groupSize)
         {
-            var usersCheckDelay = TimeSpan.FromSeconds(1);
-            await Task.Delay(usersCheckDelay, cancellationToken);
+            var usersCheckDelayTime = TimeSpan.FromSeconds(1);
+            await Task.Delay(usersCheckDelayTime, cancellationToken);
         }
 
         var matchResult = new MatchResultModel
@@ -45,7 +27,7 @@ public class MatchResultProducerService(
             UserIDs = new List<string>(groupSize),
         };
 
-        lock (consumer.ConsumedUsersLock)
+        lock (consumer.ConsumedUsers)
         {
             for (var i = 0; i < groupSize; i++)
             {
@@ -55,11 +37,13 @@ public class MatchResultProducerService(
             }
         }
 
-        var matchResultSerialized = JsonConvert.SerializeObject(matchResult);
-
         try
         {
-            await producer.ProduceAsync(
+            var matchMakingCompleteTopicName = configuration.GetValue<string>(
+                Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingCompleteKey);
+            var matchResultSerialized = JsonConvert.SerializeObject(matchResult);
+
+            await Producer.ProduceAsync(
                 matchMakingCompleteTopicName,
                 new Message<string, string>
                 {

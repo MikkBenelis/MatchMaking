@@ -10,7 +10,7 @@
 			"FormatterOptions": {
 				"SingleLine": true,
 				"IncludeScopes": true,
-				"TimestampFormat": "yyyy.MM.dd HH:mm:ss "
+				"TimestampFormat": "[yyyy.MM.dd HH:mm:ss] "
 			}
 		}
 	},
@@ -19,8 +19,16 @@
 	},
 	"MatchMaking": {
 		"KafkaTopics": {
-			"Request": "matchmaking.request",
-			"Complete": "matchmaking.complete"
+			"Request": {
+				"Name": "matchmaking.request",
+				"NumPartitions": 1,
+				"ReplicationFactor": 1
+			},
+			"Complete": {
+				"Name": "matchmaking.complete",
+				"NumPartitions": 1,
+				"ReplicationFactor": 1
+			}
 		},
 		"RequestDelay": {
 			"MinMS": 3000,

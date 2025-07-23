@@ -39,6 +39,16 @@
 - Kafka topic name for completed matches
 - Default value: `"matchmaking.complete"`
 
+### `MatchMaking:RedisLogging:IsActive`:
+
+- Should Redis logging be enabled?
+- Default value: `true`
+
+### `MatchMaking:RedisLogging:LifetimeHours`:
+
+- Lifetime of logs stored in Redis in hours
+- Default value: `24`
+
 ### `MatchMaking:GroupSize`:
 
 - Group size of a match

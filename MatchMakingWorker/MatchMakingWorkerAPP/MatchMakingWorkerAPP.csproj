@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
 	<PropertyGroup>
-		<OutputType>Exe</OutputType>
+		<OutputType>exe</OutputType>
+	</PropertyGroup>
+
+	<PropertyGroup>
 		<AssemblyName>MatchMakingWorkerAPP</AssemblyName>
 		<RootNamespace>MatchMakingWorkerAPP</RootNamespace>
 	</PropertyGroup>

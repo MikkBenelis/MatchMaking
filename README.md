@@ -34,7 +34,7 @@
 
 ## Prerequisites
 
-- Running **Docker** with the following list of optionally pre-pulled images:
+- Running **Docker** engine with the following list of optionally pre-pulled images:
 	- `apache/kafka:latest` to run Kafka as an event streaming platform
 	- `provectuslabs/kafka-ui:latest` to inspect Kafka event stream
 	- `redis:latest` to run Redis as an in-memory database
@@ -54,12 +54,12 @@
 
 ## Configuration
 
-### MatchMaking.Service Configuration:
+### MatchMakingService Configuration:
 
 - Configuration file: `MatchMakingService/MatchMakingServiceAPI/MatchMakingServiceAPI.json`
 - Configuration description: `MatchMakingService/MatchMakingServiceAPI/README.md`
 
-### MatchMaking.Worker Configuration:
+### MatchMakingWorker Configuration:
 
 - Configuration file: `MatchMakingWorker/MatchMakingWorkerAPP/MatchMakingWorkerAPP.json`
 - Configuration description: `MatchMakingWorker/MatchMakingWorkerAPP/README.md`
@@ -70,27 +70,27 @@
 
 ### TL;DR (OR FOLLOW STEPS 1-7 MANUALLY)
 
-- Run `CMDUtilities/SingleFileStartup.bat` to build, setup and start everything
-- Run `CMDUtilities/SingleFileCleanup.bat` to stop and remove everything
+- Run `CMDUtilities/SingleFileStartup(.bat/.sh)` to build, setup and start everything
+- Run `CMDUtilities/SingleFileCleanup(.bat/.sh)` to stop and remove everything
 - Use SwaggerUI to test API endpoints at http://localhost:800 or https://localhost:4430
 - **[OPTIONAL]** Install SSL certificate (client-only):
 	- It is only required for the HTTPS support (can be toggled via configuration file)
-	- Certificate: `MatchMaking.Service/MatchMakingServiceAPI/MatchMakingServiceAPI.pfx`
+	- Certificate: `MatchMakingService/MatchMakingServiceAPI/MatchMakingServiceAPI.pfx`
 	- The provided certificate password is `default`
 
 ### Step 1: Build MatchMakingService Image
 
-- Run `CMDUtilities/DockerImageBuildService.bat`
+- Run `CMDUtilities/DockerImageBuildService(.bat/.sh)`
 - The `match_making_service:latest` docker image will be produced
 
 ### Step 2: Build MatchMakingWorker Image
 
-- Run `CMDUtilities/DockerImageBuildWorker.bat`
+- Run `CMDUtilities/DockerImageBuildWorker(.bat/.sh)`
 - The `match_making_worker:latest` image will be produced
 
 ### Step 3: Setup MatchMaking Infrastructure
 
-Run `CMDUtilities/DockerComposeInfrastructureUp.bat`
+Run `CMDUtilities/DockerComposeInfrastructureUp(.bat/.sh)`
 
 - The `match_making` network will be created
 - The `match_making` volume will be created
@@ -102,14 +102,14 @@ Run `CMDUtilities/DockerComposeInfrastructureUp.bat`
 
 ### Step 4: Init Kafka Configuration
 
-Run `CMDUtilities/KafkaInitialSetup.bat`
+Run `CMDUtilities/KafkaInitialSetup(.bat/.sh)`
 
 - The `matchmaking.request` topic with **two partitions** will be created
 - The `matchmaking.complete` topic with **single partition** will be created
 
 ### Step 5: Setup MatchMaking Payload
 
-Run `CMDUtilities/DockerComposePayloadUp.bat`
+Run `CMDUtilities/DockerComposePayloadUp(.bat/.sh)`
 
 - The following containers will be created:
 	- `match_making_service` based on `match_making_service:latest` listening `800` and `4430` host ports
@@ -120,7 +120,7 @@ Run `CMDUtilities/DockerComposePayloadUp.bat`
 If you are going to test it with SSL/HTTPS enabled:
 
 - certificate needs to be installed on a client machine
-- certificate: `MatchMaking.Service/MatchMakingServiceAPI/MatchMakingServiceAPI.pfx`
+- certificate: `MatchMakingService/MatchMakingServiceAPI/MatchMakingServiceAPI.pfx`
 - the provided certificate password is `default`
 
 ### Step 7: Test Open SwaggerUI to test API endpoints
@@ -132,20 +132,14 @@ If you are going to test it with SSL/HTTPS enabled:
 
 ### Cleanup After testing
 
-- Run `CMDUtilities/DockerComposePayloadDown.bat`
-- Run `CMDUtilities/DockerComposeInfrastructureDown.bat`
-- Run `CMDUtilities/DockerArtifactsCleanup.bat`
+- Run `CMDUtilities/DockerComposePayloadDown(.bat/.sh)`
+- Run `CMDUtilities/DockerComposeInfrastructureDown(.bat/.sh)`
+- Run `CMDUtilities/DockerArtifactsCleanup(.bat/.sh)`
 
 ---
 
-## What can be improved / TODO list
+## What can be improved aka TODO list
 
-- Add Linux batch command files (`.sh` alternative to `.bat` files)
-- Improve application security (add authentication, change defaults, etc.)
-- Handle configuration errors (missing/invalid values, default values, etc.)
-- Handle docker compose related errors (port availability, existing image/container, etc.)
-- Handle user disconnection and match completion logic (remove from history/queue, etc.)
-- Use better logging options (log matches and players in more structured way, etc.)
-- Use some sort of automapper to map between DTOs and models
-
----
+- Handle configuration errors: missing/invalid values, add hardcoded default values, etc.
+- Implement user disconnection and match completion logic: remove from history/queue, etc.
+- Improve application security: add user/API authentication, change defaults, etc.

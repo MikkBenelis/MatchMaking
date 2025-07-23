@@ -25,19 +25,25 @@ public static class Constants
     {
         public static class ConnectionStrings
         {
-            public const string Redis = "Redis";
-            public const string Kafka = "Kafka";
+            public const string KafkaName = "Kafka";
+            public const string RedisName = "Redis";
         }
 
         public static class MatchMaking
         {
             public static class KafkaTopics
             {
-                public const string MatchMakingRequest = "MatchMaking:KafkaTopics:Request";
-                public const string MatchMakingComplete = "MatchMaking:KafkaTopics:Complete";
+                public const string MatchMakingRequestKey = "MatchMaking:KafkaTopics:Request";
+                public const string MatchMakingCompleteKey = "MatchMaking:KafkaTopics:Complete";
             }
 
-            public const string GroupSize = "MatchMaking:GroupSize";
+            public static class RedisLogging
+            {
+                public const string IsActiveKey = "MatchMaking:RedisLogging:IsActive";
+                public const string LifetimeHoursKey = "MatchMaking:RedisLogging:LifetimeHours";
+            }
+
+            public const string GroupSizeKey = "MatchMaking:GroupSize";
         }
     }
 }

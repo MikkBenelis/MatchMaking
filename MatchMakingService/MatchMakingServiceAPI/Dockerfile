@@ -10,7 +10,7 @@ COPY [ ".editorconfig", \
 	"global.json", \
 	"./" ]
 
-COPY "MatchMakingService/MatchMaking.Service.sln" "./"
+COPY "MatchMakingService/MatchMakingService.sln" "./"
 COPY "MatchMakingService/MatchMakingService.Data/MatchMakingService.Data.csproj" "./MatchMakingService.Data/"
 COPY "MatchMakingService/MatchMakingService.Services/MatchMakingService.Services.csproj" "./MatchMakingService.Services/"
 COPY "MatchMakingService/MatchMakingServiceAPI/MatchMakingServiceAPI.csproj" "./MatchMakingServiceAPI/"

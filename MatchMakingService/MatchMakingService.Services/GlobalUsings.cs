@@ -1,4 +1,8 @@
+global using System;
 global using System.Collections.Concurrent;
+global using System.Linq;
+global using System.Threading;
+global using System.Threading.Tasks;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
@@ -13,3 +17,4 @@ global using StackExchange.Redis;
 global using MatchMakingService.Data;
 global using MatchMakingService.Data.DataTransferObjects;
 global using MatchMakingService.Data.KafkaTopicModels;
+global using MatchMakingService.Services.InfrastructureServices;

@@ -22,12 +22,12 @@ Console.ResetColor();
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Configuration.AddJsonFile("MatchMakingWorkerAPP.json");
-builder.Logging.AddMatchMakingLoggerProvider();
+builder.Logging.AddMatchMakingRedisLoggerProvider();
 
 #region Redis
 
 var redisConnectionString = builder.Configuration.GetConnectionString(
-    Constants.Configuration.ConnectionStrings.Redis)!;
+    Constants.Configuration.ConnectionStrings.RedisName)!;
 
 var redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
 builder.Services.AddSingleton<IConnectionMultiplexer>(redisConnectionMultiplexer);

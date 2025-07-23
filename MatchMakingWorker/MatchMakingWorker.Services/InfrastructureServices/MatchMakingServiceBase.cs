@@ -1,11 +1,12 @@
-namespace MatchMakingService.Services;
+namespace MatchMakingWorker.Services.InfrastructureServices;
 
 public abstract class MatchMakingServiceBase(ILogger logger) : BackgroundService
 {
     public override Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(Constants.LogMessages.ServiceStarted);
-        _ = Task.Run(() => base.StartAsync(cancellationToken), cancellationToken);
+        Task.Run(() => base.StartAsync(cancellationToken), cancellationToken);
+
         return Task.CompletedTask;
     }
 

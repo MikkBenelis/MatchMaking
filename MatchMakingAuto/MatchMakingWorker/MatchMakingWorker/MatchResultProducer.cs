@@ -1,15 +1,36 @@
 namespace MatchMakingWorker;
 
-public class MatchResultProducer(ILogger<MatchResultProducer> logger, IConfiguration configuration, MatchUserConsumer consumer) : MatchMakingWorkerBase(logger)
+#pragma warning disable CS9107
+
+public class MatchResultProducer(ILogger<MatchResultProducer> logger, IConfiguration configuration, MatchUserConsumer consumer)
+    : MatchMakingWorkerBase(logger, configuration)
 {
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(Constants.LogMessages.ServiceRunning);
 
+        #region Ensure match making complete topic created
+
+        var matchMakingCompleteTopicName = configuration.GetValue<string>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.NameKey)!;
+
+        var matchMakingCompleteTopicNumPartitions = configuration.GetValue<int>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.NumPartitionsKey);
+
+        var matchMakingCompleteTopicReplicationFactor = configuration.GetValue<short>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.ReplicationFactorKey);
+
+        await EnsureTopicCreatedAsync(
+            matchMakingCompleteTopicName,
+            matchMakingCompleteTopicNumPartitions,
+            matchMakingCompleteTopicReplicationFactor);
+
+        #endregion
+
         var producerConfig = new ProducerConfig
         {
             BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
+                Constants.Configuration.ConnectionStrings.KafkaName),
         };
 
         using var producer = new ProducerBuilder<string, string>(producerConfig).Build();
@@ -23,10 +44,10 @@ public class MatchResultProducer(ILogger<MatchResultProducer> logger, IConfigura
         logger.LogDebug(Constants.LogMessages.ServiceWorking);
 
         var matchMakingCompleteTopicName = configuration.GetValue<string>(
-            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete);
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingComplete.NameKey);
 
         var groupSize = configuration.GetValue<int>(
-            Constants.Configuration.MatchMaking.GroupSize);
+            Constants.Configuration.MatchMaking.GroupSizeKey);
 
         while (consumer.ConsumedUsers.Count < groupSize)
         {
@@ -38,7 +59,7 @@ public class MatchResultProducer(ILogger<MatchResultProducer> logger, IConfigura
         var userIDs = new List<string>(groupSize);
         var timestamp = DateTime.UtcNow;
 
-        lock (consumer.ConsumedUsersLock)
+        lock (consumer.ConsumedUsers)
         {
             for (var i = 0; i < groupSize; i++)
             {
