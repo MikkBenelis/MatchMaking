@@ -1,11 +1,10 @@
-﻿.idea
-*.user
+﻿**/.idea/
+**/*.user
 
-.artifacts
-.publish
-.run
+**/.artifacts/
+**/.publish/
+**/.run/
 
-.git
-.gitignore
-.dockerignore
-DockerCompose.yml
+**/.gitignore
+**/.dockerignore
+**/README.*

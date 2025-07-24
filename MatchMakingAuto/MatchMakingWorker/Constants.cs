@@ -27,18 +27,29 @@ internal static class Constants
     {
         internal static class ConnectionStrings
         {
-            internal const string Kafka = "Kafka";
+            internal const string KafkaName = "Kafka";
         }
 
         internal static class MatchMaking
         {
             internal static class KafkaTopics
             {
-                internal const string MatchMakingRequest = "MatchMaking:KafkaTopics:Request";
-                internal const string MatchMakingComplete = "MatchMaking:KafkaTopics:Complete";
+                internal static class MatchMakingRequest
+                {
+                    internal const string NameKey = "MatchMaking:KafkaTopics:Request:Name";
+                    internal const string NumPartitionsKey = "MatchMaking:KafkaTopics:Request:NumPartitions";
+                    internal const string ReplicationFactorKey = "MatchMaking:KafkaTopics:Request:ReplicationFactor";
+                }
+
+                internal static class MatchMakingComplete
+                {
+                    internal const string NameKey = "MatchMaking:KafkaTopics:Complete:Name";
+                    internal const string NumPartitionsKey = "MatchMaking:KafkaTopics:Complete:NumPartitions";
+                    internal const string ReplicationFactorKey = "MatchMaking:KafkaTopics:Complete:ReplicationFactor";
+                }
             }
 
-            internal const string GroupSize = "MatchMaking:GroupSize";
+            internal const string GroupSizeKey = "MatchMaking:GroupSize";
         }
     }
 }

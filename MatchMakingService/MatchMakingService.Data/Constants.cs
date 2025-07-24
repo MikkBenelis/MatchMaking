@@ -24,6 +24,7 @@ public static class Constants
     {
         public const string UserIsAlreadySearching = "User is already searching!";
         public const string UserIsAlreadyPlaying = "User is already playing!";
+        public const string UserIsNotPlaying = "User is not playing!";
 
         public const string UserIDIsRequired = "UserID is required!";
     }
@@ -32,29 +33,35 @@ public static class Constants
     {
         public static class ConnectionStrings
         {
-            public const string Redis = "Redis";
-            public const string Kafka = "Kafka";
+            public const string KafkaName = "Kafka";
+            public const string RedisName = "Redis";
         }
 
-        public const string AllowSwagger = "AllowSwagger";
-        public const string ForceHTTPSRedirect = "ForceHTTPSRedirect";
+        public const string AllowSwaggerKey = "AllowSwagger";
+        public const string ForceHTTPSRedirectKey = "ForceHTTPSRedirect";
 
         public static class MatchMaking
         {
             public static class KafkaTopics
             {
-                public const string MatchMakingRequest = "MatchMaking:KafkaTopics:Request";
-                public const string MatchMakingComplete = "MatchMaking:KafkaTopics:Complete";
+                public const string MatchMakingRequestKey = "MatchMaking:KafkaTopics:Request";
+                public const string MatchMakingCompleteKey = "MatchMaking:KafkaTopics:Complete";
+            }
+
+            public static class RedisLogging
+            {
+                public const string IsActiveKey = "MatchMaking:RedisLogging:IsActive";
+                public const string LifetimeHoursKey = "MatchMaking:RedisLogging:LifetimeHours";
             }
 
             public static class RateLimiter
             {
-                public const string MillisecondsLimit = "MatchMaking:RateLimiter:MillisecondsLimit";
-                public const string RequestsCountLimit = "MatchMaking:RateLimiter:RequestsCountLimit";
-                public const string RequestsQueueLimit = "MatchMaking:RateLimiter:RequestsQueueLimit";
-                public const string IsActiveGlobally = "MatchMaking:RateLimiter:IsActiveGlobally";
-                public const string IsActiveForMatchSearch = "MatchMaking:RateLimiter:IsActiveForMatchSearch";
-                public const string IsActiveForMatchStatus = "MatchMaking:RateLimiter:IsActiveForMatchStatus";
+                public const string MillisecondsLimitKey = "MatchMaking:RateLimiter:MillisecondsLimit";
+                public const string RequestsCountLimitKey = "MatchMaking:RateLimiter:RequestsCountLimit";
+                public const string RequestsQueueLimitKey = "MatchMaking:RateLimiter:RequestsQueueLimit";
+                public const string IsActiveGloballyKey = "MatchMaking:RateLimiter:IsActiveGlobally";
+                public const string IsActiveForMatchSearchKey = "MatchMaking:RateLimiter:IsActiveForMatchSearch";
+                public const string IsActiveForMatchStatusKey = "MatchMaking:RateLimiter:IsActiveForMatchStatus";
             }
         }
     }

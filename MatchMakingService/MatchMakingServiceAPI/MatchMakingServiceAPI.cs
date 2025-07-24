@@ -22,18 +22,18 @@ Console.ResetColor();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("MatchMakingServiceAPI.json");
-builder.Logging.AddMatchMakingLoggerProvider();
+builder.Logging.AddMatchMakingRedisLoggerProvider();
 
 #region Rate Limiter
 
 var useGlobalRateLimiter = builder.Configuration.GetValue<bool>(
-    Constants.Configuration.MatchMaking.RateLimiter.IsActiveGlobally);
+    Constants.Configuration.MatchMaking.RateLimiter.IsActiveGloballyKey);
 
 var useMatchSearchRateLimiter = builder.Configuration.GetValue<bool>(
-    Constants.Configuration.MatchMaking.RateLimiter.IsActiveForMatchSearch);
+    Constants.Configuration.MatchMaking.RateLimiter.IsActiveForMatchSearchKey);
 
 var useMatchStatusRateLimiter = builder.Configuration.GetValue<bool>(
-    Constants.Configuration.MatchMaking.RateLimiter.IsActiveForMatchStatus);
+    Constants.Configuration.MatchMaking.RateLimiter.IsActiveForMatchStatusKey);
 
 if (useGlobalRateLimiter)
     builder.Services.AddRateLimiter(serviceOptions =>
@@ -44,13 +44,13 @@ if (useGlobalRateLimiter)
             limiterOptions =>
             {
                 var millisecondsLimit = builder.Configuration.GetValue<int>(
-                    Constants.Configuration.MatchMaking.RateLimiter.MillisecondsLimit);
+                    Constants.Configuration.MatchMaking.RateLimiter.MillisecondsLimitKey);
                 limiterOptions.Window = TimeSpan.FromMilliseconds(millisecondsLimit);
 
                 limiterOptions.PermitLimit = builder.Configuration.GetValue<int>(
-                    Constants.Configuration.MatchMaking.RateLimiter.RequestsCountLimit);
+                    Constants.Configuration.MatchMaking.RateLimiter.RequestsCountLimitKey);
                 limiterOptions.QueueLimit = builder.Configuration.GetValue<int>(
-                    Constants.Configuration.MatchMaking.RateLimiter.RequestsQueueLimit);
+                    Constants.Configuration.MatchMaking.RateLimiter.RequestsQueueLimitKey);
             });
     });
 
@@ -67,7 +67,7 @@ builder.Services.AddSwaggerGen();
 #region Redis
 
 var redisConnectionString = builder.Configuration.GetConnectionString(
-    Constants.Configuration.ConnectionStrings.Redis)!;
+    Constants.Configuration.ConnectionStrings.RedisName)!;
 
 var redisConnectionMultiplexer = ConnectionMultiplexer.Connect(redisConnectionString);
 builder.Services.AddSingleton<IConnectionMultiplexer>(redisConnectionMultiplexer);
@@ -93,7 +93,7 @@ builder.Services.AddHostedService<MatchResultConsumerService>(provider =>
 var application = builder.Build();
 
 if (builder.Configuration.GetValue<bool>(
-        Constants.Configuration.AllowSwagger))
+        Constants.Configuration.AllowSwaggerKey))
 {
     application.MapOpenApi();
     application.UseSwagger();
@@ -101,7 +101,7 @@ if (builder.Configuration.GetValue<bool>(
 }
 
 if (builder.Configuration.GetValue<bool>(
-        Constants.Configuration.ForceHTTPSRedirect))
+        Constants.Configuration.ForceHTTPSRedirectKey))
     application.UseHttpsRedirection();
 
 if (useGlobalRateLimiter)

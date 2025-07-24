@@ -4,5 +4,6 @@
 public record MatchUserModel
 {
     public required string UserID { get; init; }
-    public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+
+    public DateTime TimeStamp { get; init; } = DateTime.UtcNow;
 }

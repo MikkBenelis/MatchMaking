@@ -1,23 +1,39 @@
 namespace MatchMakingWorker;
 
-public class MatchUserConsumer(ILogger<MatchUserConsumer> logger, IConfiguration configuration) : MatchMakingWorkerBase(logger)
+#pragma warning disable CS9107
+
+public class MatchUserConsumer(ILogger<MatchUserConsumer> logger, IConfiguration configuration)
+    : MatchMakingWorkerBase(logger, configuration)
 {
-    public ConcurrentQueue<string> ConsumedUsers { get; } = [];
-    public readonly Lock ConsumedUsersLock = new();
+    public readonly ConcurrentQueue<string> ConsumedUsers = [];
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation(Constants.LogMessages.ServiceRunning);
 
+        #region Ensure match making request topic created
+
         var matchMakingRequestTopicName = configuration.GetValue<string>(
-            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest)!;
-        await EnsureTopicCreatedAsync(matchMakingRequestTopicName);
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.NameKey)!;
+
+        var matchMakingRequestTopicNumPartitions = configuration.GetValue<int>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.NumPartitionsKey);
+
+        var matchMakingRequestTopicReplicationFactor = configuration.GetValue<short>(
+            Constants.Configuration.MatchMaking.KafkaTopics.MatchMakingRequest.ReplicationFactorKey);
+
+        await EnsureTopicCreatedAsync(
+            matchMakingRequestTopicName,
+            matchMakingRequestTopicNumPartitions,
+            matchMakingRequestTopicReplicationFactor);
+
+        #endregion
 
         var config = new ConsumerConfig
         {
             GroupId = nameof(MatchMakingWorker),
             BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
+                Constants.Configuration.ConnectionStrings.KafkaName),
             AutoOffsetReset = AutoOffsetReset.Earliest,
         };
 
@@ -38,7 +54,7 @@ public class MatchUserConsumer(ILogger<MatchUserConsumer> logger, IConfiguration
             var value = JsonConvert.DeserializeObject<dynamic>(result.Message.Value);
             var userID = (string)value!.UserID;
 
-            lock (ConsumedUsersLock)
+            lock (ConsumedUsers)
             {
                 if (ConsumedUsers.Contains(userID))
                 {
@@ -61,39 +77,5 @@ public class MatchUserConsumer(ILogger<MatchUserConsumer> logger, IConfiguration
         }
 
         return Task.CompletedTask;
-    }
-
-    private async Task EnsureTopicCreatedAsync(string topicName)
-    {
-        var adminConfig = new AdminClientConfig
-        {
-            BootstrapServers = configuration.GetConnectionString(
-                Constants.Configuration.ConnectionStrings.Kafka),
-        };
-
-        using var adminClient = new AdminClientBuilder(adminConfig).Build();
-        try
-        {
-            var metadata = adminClient.GetMetadata(TimeSpan.FromSeconds(10));
-            if (metadata.Topics.Exists(t => t.Topic == topicName))
-                return;
-
-            await adminClient.CreateTopicsAsync([
-                new TopicSpecification
-                {
-                    Name = topicName,
-                    ReplicationFactor = 1,
-                    NumPartitions = 1,
-                },
-            ]);
-        }
-        catch (CreateTopicsException ex)
-        {
-            using (logger.BeginScope("-"))
-            {
-                logger.LogError(Constants.LogMessages.TopicCreationError);
-                logger.LogError(Constants.LogMessages.FailureReason, ex.Error.Reason);
-            }
-        }
     }
 }
